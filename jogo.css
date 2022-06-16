@@ -1,3 +1,6 @@
+body{
+    background-color: rgb(32, 32, 32)
+}
 canvas {
     padding: 50px;
     margin: auto;
