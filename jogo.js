@@ -29,6 +29,8 @@ var baixo = 40
 
 var taxa = 1;
 
+var divPonto = document.getElementsByClassName("pontuacaoNumero");
+var pontuacao = divPonto.value;
 
 // função que cria o objeto.
 
@@ -38,10 +40,46 @@ function desenhaCirculo() {
     pincel.beginPath();
     pincel.rect(posiObjetox, posiObjetoy, widhtObjeto, heightObejeto);
     pincel.fill();
+    
 
+}
+function pontuacao1 (){
+    if(    posiObjetox < posiMacax + widhtMaca &&
+        posiObjetox + widhtObjeto > posiMacax &&
+        posiObjetoy < posiMacay + heightMaca &&
+        posiObjetoy + heightObejeto > posiMacay){
+            var pontuacaoTotal = pontuacao;
+            pontuacaoTotal =+ 10
+            
+            pontuacaoTotal.textcontent = pontuacaoTotal;
+            
+            pincel.fillStyle = 'white';
+            pincel.beginPath();
+            pincel.rect(posiObjetox - taxa - taxa, posiObjetoy - taxa - taxa, widhtObjeto, heightObejeto);
+            pincel.fill();
+
+
+        }
 }
 
 
+
+
+
+function desenhaMaca (){
+    if(!(    posiObjetox < posiMacax + widhtMaca &&
+        posiObjetox + widhtObjeto > posiMacax &&
+        posiObjetoy < posiMacay + heightMaca &&
+        posiObjetoy + heightObejeto > posiMacay)){
+            
+    pincel.fillStyle = 'red';
+    pincel.beginPath();
+    pincel.rect(posiMacax, posiMacay, widhtMaca, heightMaca);
+    pincel.fill();
+    
+    
+    }
+}
 
 // função que desenha o grid.
 
@@ -68,34 +106,6 @@ function limpaTela() {
 
 }
 
-function desenhaMaca (){
-    if(!(    posiObjetox < posiMacax + widhtMaca &&
-        posiObjetox + widhtObjeto > posiMacax &&
-        posiObjetoy < posiMacay + heightMaca &&
-        posiObjetoy + heightObejeto > posiMacay)){
-            
-    pincel.fillStyle = 'red';
-    pincel.beginPath();
-    pincel.rect(posiMacax, posiMacay, widhtMaca, heightMaca);
-    pincel.fill();
-    
-    }
-}
-function objeto(){
-    if(posiObjetox < posiMacax + widhtMaca &&
-        posiObjetox + widhtObjeto > posiMacax &&
-        posiObjetoy < posiMacay + heightMaca &&
-        posiObjetoy + heightObejeto > posiMacay){
-            
-            pincel.fillStyle = 'white';
-            pincel.beginPath();
-            pincel.rect(50, 50, widhtObjeto, heightObejeto);
-            pincel.fill();
-
-        }
-}
-
-
 // função para atualizar a tela, desenhando o grid e o objeto.
 
 function atualizaTela() {
@@ -103,7 +113,7 @@ function atualizaTela() {
     limpaTela();
     desenhaCirculo();
     desenhaMaca();
-    objeto();
+    pontuacao1();
 }
 
 setInterval(atualizaTela, 20); // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
@@ -170,8 +180,8 @@ function movimentacaoInfinita(){
         posiObjetoy < posiMacay + heightMaca &&
         posiObjetoy + heightObejeto > posiMacay){
 
-        posiMacax = Math.floor(Math.random(0) * 499);
-        posiMacay = Math.floor(Math.random(0) * 499);
+        posiMacax = Math.floor(Math.random(0) * 450);
+        posiMacay = Math.floor(Math.random(0) * 450);
     }
 
 }
