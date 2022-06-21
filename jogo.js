@@ -5,15 +5,27 @@ var pincel = tela.getContext('2d'); // Váriavel usada para pintar na tela.
 
 var posiObjetox = 237;
 var posiObjetoy = 237;
+var widhtObjeto = 25;
+var heightObjeto = 25;
 
-var posiMacax = 237;
-var posiMacay = 237; 
+var snake2x = 212;
+var snake2y = 237;
 
+var snake3x = 187;
+var snake3y = 237;
+
+
+
+
+
+var posiMacax = 150;
+var posiMacay = 200; 
 var widhtMaca = 10;
 var heightMaca = 10;
 
-var widhtObjeto = 30;
-var heightObejeto = 30;
+
+
+
 
 
 
@@ -27,58 +39,51 @@ var baixo = 40
 
 // Quantidade de pixel que o objeto se movimenta.
 
-var taxa = 1;
+var taxa = 17;
+var tamanho = false;
 
-var divPonto = document.getElementsByClassName("pontuacaoNumero");
-var pontuacao = divPonto.value;
 
 // função que cria o objeto.
 
 function desenhaCirculo() {
+    pincel.fillStyle = 'white';
+    pincel.beginPath();
+    pincel.rect(posiObjetox, posiObjetoy, widhtObjeto, heightObjeto);
+    pincel.fill();
+
+    pincel.fillStyle = 'red';
+    pincel.beginPath();
+    pincel.rect(snake2x, snake2y, widhtObjeto, heightObjeto);
+    pincel.fill();
 
     pincel.fillStyle = 'white';
     pincel.beginPath();
-    pincel.rect(posiObjetox, posiObjetoy, widhtObjeto, heightObejeto);
+    pincel.rect(snake3x, snake3y, widhtObjeto, heightObjeto);
     pincel.fill();
+
+    if(tamanho === true) {
+            
+        pincel.fillStyle = 'red';
+        pincel.beginPath();
+        pincel.rect(posiObjetox - 90, posiObjetoy, widhtObjeto, heightObjeto);
+        pincel.fill();
+    }
     
-
+    
 }
-function pontuacao1 (){
-    if(    posiObjetox < posiMacax + widhtMaca &&
-        posiObjetox + widhtObjeto > posiMacax &&
-        posiObjetoy < posiMacay + heightMaca &&
-        posiObjetoy + heightObejeto > posiMacay){
-            var pontuacaoTotal = pontuacao;
-            pontuacaoTotal =+ 10
-            
-            pontuacaoTotal.textcontent = pontuacaoTotal;
-            
-            pincel.fillStyle = 'white';
-            pincel.beginPath();
-            pincel.rect(posiObjetox - taxa - taxa, posiObjetoy - taxa - taxa, widhtObjeto, heightObejeto);
-            pincel.fill();
-
-
-        }
-}
-
-
-
 
 
 function desenhaMaca (){
     if(!(    posiObjetox < posiMacax + widhtMaca &&
         posiObjetox + widhtObjeto > posiMacax &&
         posiObjetoy < posiMacay + heightMaca &&
-        posiObjetoy + heightObejeto > posiMacay)){
+        posiObjetoy + heightObjeto > posiMacay)){
             
     pincel.fillStyle = 'red';
     pincel.beginPath();
     pincel.rect(posiMacax, posiMacay, widhtMaca, heightMaca);
     pincel.fill();
-    
-    
-    }
+        }
 }
 
 // função que desenha o grid.
@@ -113,7 +118,7 @@ function atualizaTela() {
     limpaTela();
     desenhaCirculo();
     desenhaMaca();
-    pontuacao1();
+    pontuacao();
 }
 
 setInterval(atualizaTela, 20); // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
@@ -129,6 +134,8 @@ function leDoTeclado(evento) {
     
     if(evento.keyCode == cima && posiObjetoy - taxa > 0) {
         posiObjetoy = posiObjetoy - taxa;
+        snake2x = posiObjetox
+        snake3x = snake2x
         
          cimaInfinito = true;
          baixoInfinito = false;
@@ -137,6 +144,8 @@ function leDoTeclado(evento) {
     
         } else if (evento.keyCode == baixo && posiObjetoy + taxa < 500) {
         posiObjetoy = posiObjetoy + taxa;
+        snake2x = posiObjetox
+        snake3x = snake2x
         
         cimaInfinito = false;
         baixoInfinito = true;
@@ -145,6 +154,8 @@ function leDoTeclado(evento) {
     
     } else if (evento.keyCode == esquerda && posiObjetox - taxa > 0) {
         posiObjetox = posiObjetox - taxa;
+        snake2y = posiObjetoy
+        snake3y = snake2y
         
         cimaInfinito = false;
         baixoInfinito = false;
@@ -153,6 +164,8 @@ function leDoTeclado(evento) {
     
     } else if (evento.keyCode == direita && posiObjetox + taxa < 500) {
         posiObjetox = posiObjetox + taxa;
+        snake2y = posiObjetoy
+        snake3y = snake2y
         
         cimaInfinito = false;
         baixoInfinito = false;
@@ -160,33 +173,46 @@ function leDoTeclado(evento) {
         direitaInfinito = true;
     }
     
+    
 }
 
 function movimentacaoInfinita(){
     if(cimaInfinito === true && posiObjetoy - taxa > 0){
         posiObjetoy = posiObjetoy - taxa;
+        snake2y = posiObjetoy + taxa
+        snake3y = snake2y + taxa
     
     }else if(baixoInfinito === true && posiObjetoy + taxa < 500){
         posiObjetoy = posiObjetoy + taxa;
+        snake2y = posiObjetoy - taxa
+        snake3y = snake2y - taxa
     
     }else if (esquerdaInfinito === true && posiObjetox - taxa > 0){
         posiObjetox = posiObjetox - taxa
+        snake2x = posiObjetox + taxa
+        snake3x = snake2x + taxa
     
     }else if (direitaInfinito === true && posiObjetox + taxa < 500){
         posiObjetox = posiObjetox + taxa
+        snake2x = posiObjetox - taxa
+        snake3x = snake2x - taxa
     }
     if(    posiObjetox < posiMacax + widhtMaca &&
         posiObjetox + widhtObjeto > posiMacax &&
         posiObjetoy < posiMacay + heightMaca &&
-        posiObjetoy + heightObejeto > posiMacay){
-
+        posiObjetoy + heightObjeto > posiMacay){
+            
         posiMacax = Math.floor(Math.random(0) * 450);
         posiMacay = Math.floor(Math.random(0) * 450);
-    }
 
-}
+        tamanho = true;
+        }
 
-setInterval(movimentacaoInfinita, 1)
+  }    
+
+
+
+setInterval(movimentacaoInfinita, 75)
 
 document.onkeydown = leDoTeclado
 
