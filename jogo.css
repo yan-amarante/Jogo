@@ -1,48 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 body{
     background-color: rgb(32, 32, 32)
 }
-canvas {
+#tabuleiro {
     padding: 130px;
     margin: auto;
     display: block;
 }
-.pontuacao{
+.rodape{
     position: absolute;
-    top: 10px;
-    right: 880px;
-    font-family: 'Roboto', sans-serif;
+    top: 80%;
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+
+}
+.titulo{
+    position: absolute;
+    top: 0%;
+    left: 43%;
     font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
-.pontuacaoNumero{
-    position: absolute;
-    top: 60px;
-    right: 965px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 40px;
-    color: white;
-}
-/*.botao{
-    position: absolute;
-    top: 335px;
-    right: 905px;
-    width: 100px;
-    height: 40px;
-    border: none;
-    color: white;
-    background-color: rgb(32, 32, 32);
-    font-family: 'Roboto', sans-serif;
-    font-size: 20px;
-    cursor: pointer;
-}
-.quadrado{
-    position: absolute;
-    top: 108px;
-    right: 710px;
-    width: 500px;
-    height: 500px;
-    background-color:white;
-    opacity: 0.7;
-    
-}
+

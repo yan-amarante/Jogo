@@ -1,40 +1,29 @@
+/*quando o jogador aperta uma das setinhas além de andar um quadrado para a direção apertada ele ativa uma variável booleana que ativa a movimentação infinita
+quando a hitbox da cobrinha se encontra com a hibox da maçã a cobrinha cresce uma posiçao e ativa o math.random que posiciona uma nova maçã em um quadrado aleatorio do mapa
+porem a primeira maçã sempre vai ser em uma posição fixa no mapa
+para conferir se a cobrinha esta dentro dos limites do mapa eu usei uma estrutura condicional para comparar a posição x e y da cobrinha com a pocição x e y do mapa
+para conferir se a cobrinha colidiu em si mesmo usei uma estrutura de repetição que fica checando se a posição x e y da cabeça e do corpo da cobrinha são iguais(a posição x e y estão dentro de um vetor),se forem ele joga um alert "infinito" na tela que força o jogador a dar f5*/
+
 var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
 var pincel = tela.getContext('2d'); // Váriavel usada para pintar na tela.
 
 // Váriavel que define a posição do objeto.
 
-var snake1x = 225;
-var snake1y = 225;
+var snakeX = 225;
+var snakeY = 225;
+var snake2Y = 225;
+var snake2X = 225;
 
-var widhtObjeto = 25;
-var heightObjeto = 25;
+var snakeCorpo = [];
 
-var snake2x = 200;
-var snake2y = 225;
+var widhtSnake = 25;
+var heightSnake = 25;
 
-var snake3x = 175;
-var snake3y = 225;
+var macaX = 153;
+var macaY = 178; 
 
-var snake4x = snake3x
-var snake4y = snake3y
-
-var snake5x = snake4x
-var snake5y = snake4y
-
-var snake6x = snake5x
-var snake6y = snake5y
-
-var snake7x = snake6x
-var snake7y = snake6y
-
-
-
-
-
-var posiMacax = 153;
-var posiMacay = 178; 
-var widhtMaca = 20;
-var heightMaca = 20;
+var widhtMaca = 25;
+var heightMaca = 25;
 
 
 
@@ -45,80 +34,72 @@ var heightMaca = 20;
 
 // códigos do teclado
 
-var esquerda = 37
-var cima = 38
-var direita = 39
-var baixo = 40
+var esquerda = 37;
+var cima = 38;
+var direita = 39;
+var baixo = 40;
 
 // Quantidade de pixel que o objeto se movimenta.
 
-var taxa = 25;
-var tamanho = 0;
-
+var taxa = 2;
 
 // função que cria o objeto.
 
-function desenhaCirculo() {
-    pincel.fillStyle = 'white';
-    pincel.beginPath();
-    pincel.rect(snake1x, snake1y, widhtObjeto, heightObjeto);
-    pincel.fill();
+function desenhaSnake() {
+    pincel.fillStyle="white";
+    pincel.fillRect(snake2X, snake2Y, widhtSnake, heightSnake);
 
-    pincel.fillStyle = 'red';
-    pincel.beginPath();
-    pincel.rect(snake2x, snake2y, widhtObjeto, heightObjeto);
-    pincel.fill();
+    if (snakeX < macaX + widhtMaca &&
+    snakeX + widhtSnake > macaX &&
+    snakeY < macaY + heightMaca &&
+    snakeY + heightSnake > macaY) {
+        
+            snakeCorpo.push([macaX,macaY]);
 
-    pincel.fillStyle = 'green';
-    pincel.beginPath();
-    pincel.rect(snake3x, snake3y, widhtObjeto, heightObjeto);
-    pincel.fill();
-
-    if(tamanho >= 1) {
-            
-        pincel.fillStyle = 'red';
-        pincel.beginPath();
-        pincel.rect(snake4x, snake4y, widhtObjeto, heightObjeto);
-        pincel.fill();
     }
-    if(tamanho >= 2) {
-            
-        pincel.fillStyle = 'white';
-        pincel.beginPath();
-        pincel.rect(snake5x, snake5y, widhtObjeto, heightObjeto);
-        pincel.fill();
+    for (let i = snakeCorpo.length-1; i > 0; i-- ) {
+        snakeCorpo[i] = snakeCorpo[i-1];
     }
-    if(tamanho >= 3) {
-            
-        pincel.fillStyle = 'red';
-        pincel.beginPath();
-        pincel.rect(snake6x, snake6y, widhtObjeto, heightObjeto);
-        pincel.fill();
-    }
-    if(tamanho >= 4) {
-            
-        pincel.fillStyle = 'white';
-        pincel.beginPath();
-        pincel.rect(snake7x, snake7y, widhtObjeto, heightObjeto);
-        pincel.fill();
+    if (snakeCorpo.length) {
+        snakeCorpo[0] = [snake2X, snake2Y];
     }
     
+    pincel.fillStyle="white";
+    pincel.fillRect(snakeX, snakeY, widhtSnake, heightSnake);
+
     
+    for (let i = 0; i < snakeCorpo.length;i++) {
+        pincel.fillRect(snakeCorpo[i][0], snakeCorpo[i][1], widhtSnake, heightSnake);
+    }
+
+    
+    
+
+ 
 }
+
+
 
 
 function desenhaMaca (){
-    if(!(    snake1x < posiMacax + widhtMaca &&
-        snake1x + widhtObjeto > posiMacax &&
-        snake1y < posiMacay + heightMaca &&
-        snake1y + heightObjeto > posiMacay)){
+
             
     pincel.fillStyle = 'red';
     pincel.beginPath();
-    pincel.rect(posiMacax, posiMacay, widhtMaca, heightMaca);
+    pincel.rect(macaX, macaY, widhtMaca, heightMaca);
     pincel.fill();
-        }
+
+    if(   snakeX < macaX + widhtMaca &&
+        snakeX + widhtSnake > macaX &&
+        snakeY < macaY + heightMaca &&
+        snakeY + heightSnake > macaY){
+            
+            macaX = Math.floor(Math.random(0) * 480);
+            macaY = Math.floor(Math.random(0) * 480);
 }
+
+}
+
 
 // função que desenha o grid.
 
@@ -131,7 +112,6 @@ function limpaTela() {
         for(var imp= 0; imp<=500;imp=imp+25){
 
             pincel.fillStyle = "black";
-            //pincel.strokeStyle = "white";
             pincel.beginPath();
             pincel.rect(imp, descer, 25, 25);
             pincel.closePath();
@@ -151,8 +131,8 @@ function limpaTela() {
 function atualizaTela() {
 
     limpaTela();
-    desenhaCirculo();
     desenhaMaca();
+
 }
 
 setInterval(atualizaTela, 20); // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
@@ -165,126 +145,88 @@ var esquerdaInfinito = false;
 var direitaInfinito = false;
 
 function leDoTeclado(evento) {
-    //y = altura
     
-    if(evento.keyCode == cima && snake1y - taxa > -50) {
-        snake1y = snake1y - taxa;
+    if(evento.keyCode == cima && snakeY - taxa > -50 && baixoInfinito === false) {
+        snakeY = snakeY - taxa;
         
-        snake2x = snake1x 
-        snake3x = snake2x
-        snake4x = snake3x
-        snake5x = snake4x
-        snake6x = snake5x
-        snake7x = snake6x
-        
+        snake2Y = snakeY; 
+              
          cimaInfinito = true;
          baixoInfinito = false;
          esquerdaInfinito = false;
          direitaInfinito = false;
     
-        } else if (evento.keyCode == baixo && snake1y + taxa < 525) {
-        snake1y = snake1y + taxa;
-        
-        snake2x = snake1x
-        snake3x = snake2x
-        snake4x = snake3x
-        snake5x = snake4x
-        snake6x = snake5x
-        snake7x = snake6x
+        } else if (evento.keyCode == baixo && snakeY + taxa < 525 && cimaInfinito === false) {
+        snakeY = snakeY + taxa;
+        snake2Y = snakeY;
         
         cimaInfinito = false;
         baixoInfinito = true;
         esquerdaInfinito = false;
         direitaInfinito = false;
     
-    } else if (evento.keyCode == esquerda && snake1x - taxa > -50) {
-        snake1x = snake1x - taxa;
-        
-        snake2y = snake1y
-        snake3y = snake2y 
-        snake4y = snake3y 
-        snake5y = snake4y 
-        snake6y = snake5y 
-        snake7y = snake6y 
+    } else if (evento.keyCode == esquerda && snakeX - taxa > -50 && direitaInfinito === false) {
+        snakeX = snakeX - taxa;
+        snake2X = snakeX; 
         
         cimaInfinito = false;
         baixoInfinito = false;
         esquerdaInfinito = true;
         direitaInfinito = false;
     
-    } else if (evento.keyCode == direita && snake1x + taxa < 525) {
-        snake1x = snake1x + taxa;
-        
-        snake2y = snake1y
-        snake3y = snake2y
-        snake4y = snake3y
-        snake5y = snake4y
-        snake6y = snake5y
-        snake7y = snake6y
+    } else if (evento.keyCode == direita && snakeX + taxa < 525 && esquerdaInfinito === false) {
+        snakeX = snakeX + taxa;
+        snake2X = snakeX; 
         
         cimaInfinito = false;
         baixoInfinito = false;
         esquerdaInfinito = false;
         direitaInfinito = true;
     }
-    
-    
+
+
 }
 
+
 function movimentacaoInfinita(){
-    if(cimaInfinito === true && snake1y - taxa > -50){
-        snake1y = snake1y- taxa;
-        
-        snake2y = snake1y + taxa
-        snake3y = snake2y + taxa
-        snake4y = snake3y + taxa
-        snake5y = snake4y + taxa
-        snake6y = snake5y + taxa
-        snake7y = snake6y + taxa
+    if(cimaInfinito === true && snakeY - taxa > -15){
+        snakeY = snakeY - taxa;
+        snake2Y = snakeY + taxa;
+
     
-    }else if(baixoInfinito === true && snake1y + taxa < 525){
-        snake1y = snake1y + taxa;
+    }else if(baixoInfinito === true && snakeY + taxa < 490){
+        snakeY = snakeY + taxa;
+        snake2Y = snakeY - taxa;
        
-        snake2y = snake1y - taxa
-        snake3y = snake2y - taxa
-        snake4y = snake3y - taxa
-        snake5y = snake4y - taxa
-        snake6y = snake5y - taxa
-        snake7y = snake6y - taxa
     
-    }else if (esquerdaInfinito === true && snake1x - taxa > -50){
-        snake1x = snake1x - taxa
+    }else if (esquerdaInfinito === true && snakeX - taxa > -15){
+        snakeX = snakeX - taxa;
+        snake2X = snakeX + taxa;
       
-        snake2x = snake1x + taxa
-        snake3x = snake2x + taxa
-        snake4x = snake3x + taxa
-        snake5x = snake4x + taxa
-        snake6x = snake5x + taxa
-        snake7x = snake6x + taxa
     
-    }else if (direitaInfinito === true && snake1x + taxa < 525){
-        snake1x = snake1x + taxa
-      
-        snake2x = snake1x - taxa
-        snake3x = snake2x - taxa
-        snake4x = snake3x - taxa
-        snake5x = snake4x - taxa
-        snake6x = snake5x - taxa
-        snake7x = snake6x - taxa
+    }else if (direitaInfinito === true && snakeX + taxa < 490){
+        snakeX = snakeX + taxa;
+        snake2X = snakeX - taxa;
+
     }
-    if(    snake1x < posiMacax + widhtMaca &&
-        snake1x + widhtObjeto > posiMacax &&
-        snake1y < posiMacay + heightMaca &&
-        snake1y + heightObjeto > posiMacay){
-            
-        posiMacax = Math.floor(Math.random(0) * 425);
-        posiMacay = Math.floor(Math.random(0) * 425);
+    desenhaSnake();
 
-        tamanho += 1;
+    if(snakeX + taxa >= 490 || snakeX - taxa <= -15 || snakeY + taxa >= 490 || snakeY - taxa <= -15){
+        alert("Você perdeu!");
+    }
+        
+    for(let i = 0; i < snakeCorpo.length; i++) {
+            if (snakeX == snakeCorpo[i][0] && snakeY == snakeCorpo[i][1]) {
+                for(let i = 0; i < 100; i++){
+                alert("Você perdeu!");
+                }
+            }
         }
-  } 
 
-setInterval(movimentacaoInfinita, 75)
+} 
 
-document.onkeydown = leDoTeclado
+
+setInterval(movimentacaoInfinita, 4);
+
+document.onkeydown = leDoTeclado;
 
